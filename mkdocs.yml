@@ -1,0 +1,130 @@
+site_name: SQA Advisor
+site_description: AI-powered investment advisor built on SQA + Claude
+site_author: Dewayne VanHoozer
+site_url: https://madbomber.github.io/sqa-advisor
+copyright: Copyright &copy; 2026 Dewayne VanHoozer
+
+repo_name: MadBomber/sqa-advisor
+repo_url: https://github.com/MadBomber/sqa-advisor
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+
+  palette:
+    - scheme: default
+      primary: green
+      accent: light-green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    - scheme: slate
+      primary: green
+      accent: light-green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/chart-line
+
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - header.autohide
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+    - content.action.edit
+    - content.action.view
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - tags
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      title: On this page
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: MadBomber
+      repo: sqa-advisor
+      normalize_issue_symbols: true
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra_css:
+  - assets/css/custom.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/MadBomber/sqa-advisor
+      name: sqa-advisor on GitHub
+    - icon: fontawesome/solid/gem
+      link: https://rubygems.org/gems/sqa-advisor
+      name: sqa-advisor on RubyGems
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Configuration: getting-started/configuration.md
+      - Quick Start: getting-started/quick-start.md
+  - Tools:
+      - Overview: tools/index.md
+      - Fundamental Data: tools/fundamental.md
+      - Technical Analysis: tools/technical.md
+      - Utilities: tools/utilities.md
+  - Architecture: architecture/index.md
+  - Development: development/index.md

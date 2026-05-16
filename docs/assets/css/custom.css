@@ -1,0 +1,26 @@
+/* SQA Advisor — MkDocs custom styles */
+
+/* Tighten table cell padding in tool reference tables */
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: 0.5em 0.75em;
+}
+
+/* Monospace for ticker symbols and env-var names in tables */
+.md-typeset table code {
+  font-size: 0.82em;
+}
+
+/* Slightly softer heading weight */
+.md-typeset h2 {
+  font-weight: 600;
+}
+
+/* Mermaid diagrams: center and cap width */
+.md-typeset .mermaid {
+  text-align: center;
+}
+
+.md-typeset .mermaid svg {
+  max-width: 800px;
+}

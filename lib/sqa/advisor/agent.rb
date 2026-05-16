@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require "ostruct"
 
 module SQA
   module Advisor
@@ -23,14 +22,22 @@ module SQA
 
       def initialize(model: ENV.fetch("SQA_ADVISOR_MODEL", "claude-sonnet-4-6"))
         configure_ruby_llm
-        @model = model
-        @chat  = build_chat
+        @model               = model
+        @tool_call_callbacks = []
+        @chat                = build_chat
       end
 
 
-      def ask(input)
+      def ask(input, &block)
         full_input = "#{SQA::Advisor::Prompts::HUMAN_PREFIX}\n#{input}"
-        @chat.ask(full_input)
+        @chat.ask(full_input, &block)
+      end
+
+
+      def on_tool_call(&block)
+        @tool_call_callbacks << block
+        @chat.before_tool_call(&block)
+        self
       end
 
 
@@ -52,9 +59,13 @@ module SQA
         timestamp  = Time.now.utc.strftime("%A, %B %d, %Y %H:%M UTC")
         system_msg = "#{SQA::Advisor::Prompts::SYSTEM_PROMPT}\n\nToday is #{timestamp}."
 
-        RubyLLM.chat(model: @model)
-               .with_instructions(system_msg)
-               .with_tools(*TOOLS)
+        chat = RubyLLM.chat(model: @model)
+                      .with_instructions(system_msg)
+                      .with_tools(*TOOLS)
+
+        @tool_call_callbacks.each { |cb| chat.before_tool_call(&cb) }
+
+        chat
       end
     end
   end

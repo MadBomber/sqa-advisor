@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require "bundler/setup"
 require "readline"
 require_relative "../lib/sqa/advisor"
 
@@ -30,10 +31,19 @@ rescue StandardError => e
   exit 1
 end
 
+# Convert snake_case tool name to PascalCase for display (e.g. stock_price → StockPrice)
+def tool_label(name)
+  name.to_s.split("_").map(&:capitalize).join
+end
+
+agent.on_tool_call do |tool_call|
+  puts "  [#{tool_label(tool_call.name)}]"
+end
+
 Readline.completion_proc = proc { |_| [] }
 
 loop do
-  raw = Readline.readline("You: ", true)
+  raw = Readline.readline("\nYou: ", true)
 
   if raw.nil?
     puts "\nGoodbye!"
@@ -49,21 +59,33 @@ loop do
     break
   when "reset"
     agent.reset
-    puts "[New conversation started]\n"
+    puts "[New conversation started]"
     next
   end
 
-  print "\nAdvisor: "
-  $stdout.flush
+  puts ""
 
   begin
-    response = agent.ask(input)
-    puts response.content
-    puts
+    header_printed = false
+
+    agent.ask(input) do |chunk|
+      text = chunk.content.to_s
+      next if text.empty?
+
+      unless header_printed
+        print "Advisor: "
+        header_printed = true
+      end
+
+      print text
+      $stdout.flush
+    end
+
+    puts "\n"
   rescue Interrupt
     puts "\n[Interrupted]"
     break
   rescue StandardError => e
-    puts "\nError: #{e.message}"
+    puts "Error: #{e.message}"
   end
 end

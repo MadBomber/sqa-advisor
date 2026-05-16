@@ -1,38 +1,111 @@
-# Sqa::Advisor
+# SQA Advisor
 
-TODO: Delete this and the text below, and describe your gem
+An AI-powered investment advisor that combines Claude (via [RubyLLM](https://github.com/crmne/ruby_llm)) with the [SQA](https://github.com/MadBomber/sqa) technical analysis library and Yahoo Finance data. Ask questions about any stock in plain English and receive a structured Markdown report covering fundamentals, technicals, news sentiment, and a recommendation.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sqa/advisor`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Features
+
+- **Conversational REPL** — interactive `sqa-advisor` CLI with readline history
+- **14 financial tools** automatically selected and invoked by the LLM:
+  - Fundamental data: price, company info, income statement, balance sheet, cash flow, dividends, analyst recommendations, news sentiment
+  - Technical analysis: RSI, SMA, EMA, MACD, Bollinger Bands, ATR, Stochastic, OBV, market regime detection, and strategy signals via SQA's 150+ TA-Lib indicators
+  - Utilities: currency conversion, calculator, date parsing, Wikipedia, web search
+- **Structured 9-section reports** — Company Overview → Technical Analysis → Investment Recommendation
+- **Multi-provider LLM support** — defaults to Claude, switchable to OpenAI via env var
+
+## Requirements
+
+- Ruby >= 3.2
+- An Anthropic API key (or OpenAI API key)
+- The [sqa](https://github.com/MadBomber/sqa) gem (provides TA-Lib bindings)
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add to your Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+gem "sqa-advisor"
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Or install directly:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+gem install sqa-advisor
+```
+
+## Configuration
+
+Copy `.env.example` to `.env` and fill in your key:
+
+```bash
+cp .env.example .env
+```
+
+```dotenv
+# Required — defaults to Claude
+ANTHROPIC_API_KEY=your_anthropic_key_here
+
+# Alternative: use OpenAI instead
+# OPENAI_API_KEY=your_openai_key_here
+
+# Optional: override the default model (default: claude-sonnet-4-6)
+# SQA_ADVISOR_MODEL=claude-opus-4-7
+
+# Optional: supply Yahoo Finance session credentials if rate-limited
+# YF_COOKIE=A1=xxx; A1S=yyy; A3=zzz
+# YF_CRUMB=your_crumb_here
 ```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Interactive CLI
+
+```bash
+bundle exec sqa-advisor
+```
+
+```
++---------------------------------------------------+
+|   SQA Advisor  --  AI Investment Analyst          |
+|   Powered by Claude + SQA + Yahoo Finance         |
+|   Type 'exit', 'quit', or Ctrl+D to quit         |
+|   Type 'reset' to start a new conversation       |
++---------------------------------------------------+
+
+You: analyze AAPL
+You: compare MSFT and GOOGL on cash flow
+You: what is NVDA's RSI and is it overbought?
+You: reset
+```
+
+### Programmatic use
+
+```ruby
+require "sqa/advisor"
+
+agent = SQA::Advisor::Agent.new                         # defaults to claude-sonnet-4-6
+agent = SQA::Advisor::Agent.new(model: "gpt-4o")        # or any RubyLLM-supported model
+
+response = agent.ask("Give me a full analysis of TSLA")
+puts response.content   # Markdown report
+
+agent.reset             # start a fresh conversation
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```bash
+git clone https://github.com/MadBomber/sqa-advisor
+cd sqa-advisor
+bundle install
+bundle exec rake test        # run tests
+bundle exec rake quality     # tests + RuboCop + Flog complexity
+bundle exec rake rubocop_fix # auto-correct style offenses
+bin/console                  # interactive console with gem loaded
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/sqa-advisor.
+Bug reports and pull requests are welcome on GitHub at https://github.com/MadBomber/sqa-advisor.
 
 ## License
 
