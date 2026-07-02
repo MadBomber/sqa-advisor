@@ -4,4 +4,5 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "sqa", path: "../sqa"
+# For local cross-repo development against sibling checkouts, use Gemfile.local:
+#   BUNDLE_GEMFILE=Gemfile.local bundle <command>
