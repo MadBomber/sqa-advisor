@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SQA
   module Advisor
     module Tools
@@ -11,6 +12,7 @@ module SQA
 
         param :symbol, desc: "The stock ticker symbol (e.g. AAPL, MSFT, GOOGL)"
 
+        # rubocop:disable Metrics/AbcSize -- data-extraction method; score reflects field count, not logical complexity (see Rakefile FLOG_EXCEPTIONS)
         def execute(symbol:)
           symbol  = symbol.upcase.strip
           data    = quote_summary(symbol, %w[summaryProfile assetProfile financialData])
@@ -48,6 +50,7 @@ module SQA
         rescue StandardError => e
           "Error fetching company info for #{symbol}: #{e.message}"
         end
+        # rubocop:enable Metrics/AbcSize
 
         private
 

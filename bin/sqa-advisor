@@ -42,6 +42,47 @@ end
 
 Readline.completion_proc = proc { |_| [] }
 
+# Handles the built-in "exit"/"quit"/"bye"/"reset" commands.
+# @return [:break, :next, nil] what the REPL loop should do next
+def handle_command(agent, input)
+  case input.downcase
+  when "exit", "quit", "bye"
+    puts "\nGoodbye!"
+    :break
+  when "reset"
+    agent.reset
+    puts "[New conversation started]"
+    :next
+  end
+end
+
+# Streams the agent's response to stdout.
+# @return [:break, nil] :break if the user interrupted the response
+def ask_agent(agent, input)
+  header_printed = false
+
+  agent.ask(input) do |chunk|
+    text = chunk.content.to_s
+    next if text.empty?
+
+    unless header_printed
+      print "Advisor: "
+      header_printed = true
+    end
+
+    print text
+    $stdout.flush
+  end
+
+  puts "\n"
+  nil
+rescue Interrupt
+  puts "\n[Interrupted]"
+  :break
+rescue StandardError => e
+  puts "Error: #{e.message}"
+end
+
 loop do
   raw = Readline.readline("\nYou: ", true)
 
@@ -53,39 +94,10 @@ loop do
   input = raw.strip
   next if input.empty?
 
-  case input.downcase
-  when "exit", "quit", "bye"
-    puts "\nGoodbye!"
-    break
-  when "reset"
-    agent.reset
-    puts "[New conversation started]"
-    next
-  end
+  command_result = handle_command(agent, input)
+  break if command_result == :break
+  next if command_result == :next
 
   puts ""
-
-  begin
-    header_printed = false
-
-    agent.ask(input) do |chunk|
-      text = chunk.content.to_s
-      next if text.empty?
-
-      unless header_printed
-        print "Advisor: "
-        header_printed = true
-      end
-
-      print text
-      $stdout.flush
-    end
-
-    puts "\n"
-  rescue Interrupt
-    puts "\n[Interrupted]"
-    break
-  rescue StandardError => e
-    puts "Error: #{e.message}"
-  end
+  break if ask_agent(agent, input) == :break
 end

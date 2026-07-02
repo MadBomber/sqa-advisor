@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SQA
   module Advisor
     module Tools
@@ -59,7 +60,6 @@ module SQA
         rescue StandardError
           headlines.map { |h| { "headline" => h, "sentiment" => "neutral" } }
         end
-
 
         def sentiment_summary(classified)
           counts = classified.group_by { |r| r["sentiment"] }.transform_values(&:count)

@@ -9,7 +9,7 @@ task default: :test
 
 desc "Check code style with RuboCop"
 task :rubocop do
-  sh "bundle exec rubocop"
+  sh "bundle exec rubocop --format simple"
 end
 
 desc "Auto-correct RuboCop offenses"
@@ -68,12 +68,31 @@ task :flog_check do
   end
 end
 
-desc "Run all quality checks: tests, RuboCop, and Flog"
+desc "Check for structural code duplication with Flay (mass >= 50)"
+task :flay_check do
+  require "flay"
+
+  mass_threshold = 50
+
+  flay = Flay.new(mass: mass_threshold, diff: false, verbose: false, summary: false, timeout: 60)
+  flay.process(*Dir.glob("lib/**/*.rb"))
+  flay.analyze
+
+  if flay.hashes.empty?
+    puts "\nFlay: no structural duplication detected (mass >= #{mass_threshold})"
+  else
+    puts "\nFlay found structural duplication (mass >= #{mass_threshold}):"
+    flay.report
+    abort "\nFlay quality gate failed: #{flay.hashes.length} pattern(s) detected"
+  end
+end
+
+desc "Run all quality checks: tests (with coverage), RuboCop, Flog, and Flay"
 task :quality do
   results = {}
 
   puts "\n#{"=" * 60}"
-  puts "Quality Gate: Tests"
+  puts "Quality Gate: Tests + Coverage"
   puts "=" * 60
   results[:tests] = system("bundle exec rake test") ? :pass : :fail
 
@@ -86,6 +105,11 @@ task :quality do
   puts "Quality Gate: Flog Complexity"
   puts "=" * 60
   results[:flog] = system("bundle exec rake flog_check") ? :pass : :fail
+
+  puts "\n#{"=" * 60}"
+  puts "Quality Gate: Flay Duplication"
+  puts "=" * 60
+  results[:flay] = system("bundle exec rake flay_check") ? :pass : :fail
 
   puts "\n#{"=" * 60}"
   puts "Quality Summary"

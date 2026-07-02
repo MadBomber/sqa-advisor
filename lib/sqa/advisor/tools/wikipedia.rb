@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "httparty"
 require "uri"
 
@@ -51,7 +52,6 @@ module SQA
           titles = JSON.parse(response.body)[1]
           titles&.first
         end
-
 
         def fetch_summary(title)
           # Wikipedia REST API uses underscores for spaces (like canonical wiki URLs)

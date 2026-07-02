@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "httparty"
 require "net/http"
 require "uri"
@@ -51,7 +52,6 @@ module SQA
           end
         end
 
-
         def quote_summary(symbol, modules)
           mods    = Array(modules).join(",")
           encoded = URI.encode_uri_component(symbol)
@@ -87,7 +87,6 @@ module SQA
           result
         end
 
-
         def price_chart(symbol, interval: "1d", range: "3mo")
           encoded       = URI.encode_uri_component(symbol)
           cookie, crumb = cookie_and_crumb
@@ -104,7 +103,6 @@ module SQA
           JSON.parse(response.body)
         end
 
-
         def search_news(symbol, count: 10)
           cookie, crumb = cookie_and_crumb
 
@@ -119,7 +117,6 @@ module SQA
           JSON.parse(response.body)["news"] || []
         end
 
-
         # Handles both {raw: n, fmt: "..."} and plain numeric values
         def raw_value(obj, key)
           return nil unless obj.is_a?(Hash)
@@ -129,7 +126,6 @@ module SQA
 
           val.is_a?(Hash) ? (val["raw"] || val["fmt"]) : val
         end
-
 
         def format_large_number(num)
           return "N/A" if num.nil?
@@ -147,7 +143,6 @@ module SQA
             num.round(2).to_s
           end
         end
-
 
         def epoch_to_date(timestamp)
           return "N/A" if timestamp.nil? || timestamp.to_i.zero?

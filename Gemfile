@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 source "https://rubygems.org"
 
 gemspec
 
-gem "sqa", path: "../sqa/main"
+gem "sqa", path: "../sqa"

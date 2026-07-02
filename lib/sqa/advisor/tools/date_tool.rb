@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "date"
 
 module SQA
@@ -54,7 +55,6 @@ module SQA
           end
         end
 
-
         def months_ago(num)
           t = Time.now.utc
           month = t.month - num
@@ -65,7 +65,6 @@ module SQA
           end
           Time.utc(year, month, [t.day, Date.new(year, month, -1).day].min, t.hour, t.min, t.sec)
         end
-
 
         def years_ago(num)
           t = Time.now.utc

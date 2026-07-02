@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SQA
   module Advisor
     module Prompts

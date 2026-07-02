@@ -27,19 +27,16 @@ module SQA
         @chat                = build_chat
       end
 
-
-      def ask(input, &block)
+      def ask(input, &)
         full_input = "#{SQA::Advisor::Prompts::HUMAN_PREFIX}\n#{input}"
-        @chat.ask(full_input, &block)
+        @chat.ask(full_input, &)
       end
-
 
       def on_tool_call(&block)
         @tool_call_callbacks << block
         @chat.before_tool_call(&block)
         self
       end
-
 
       def reset
         @chat = build_chat
@@ -53,7 +50,6 @@ module SQA
           config.openai_api_key    = ENV["OPENAI_API_KEY"]    if ENV["OPENAI_API_KEY"]
         end
       end
-
 
       def build_chat
         timestamp  = Time.now.utc.strftime("%A, %B %d, %Y %H:%M UTC")

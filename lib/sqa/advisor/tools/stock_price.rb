@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SQA
   module Advisor
     module Tools
@@ -10,6 +11,7 @@ module SQA
 
         param :symbol, desc: "The stock ticker symbol (e.g. AAPL, MSFT, GOOGL, BRK-B)"
 
+        # rubocop:disable Metrics/AbcSize -- data-extraction method; score reflects field count, not logical complexity (see Rakefile FLOG_EXCEPTIONS)
         def execute(symbol:)
           symbol = symbol.upcase.strip
           data   = quote_summary(symbol, %w[price summaryDetail defaultKeyStatistics])
@@ -49,6 +51,7 @@ module SQA
         rescue StandardError => e
           "Error fetching stock price for #{symbol}: #{e.message}"
         end
+        # rubocop:enable Metrics/AbcSize
       end
     end
   end

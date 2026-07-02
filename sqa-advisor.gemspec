@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "lib/sqa/advisor/version"
 
 Gem::Specification.new do |spec|
@@ -28,9 +29,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sqa"
 
   spec.add_development_dependency "debug_me"
+  spec.add_development_dependency "flay"
   spec.add_development_dependency "flog"
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "racc" # flog/flay transitively need this on Ruby 4+
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "simplecov"
   spec.metadata["rubygems_mfa_required"] = "true"
 end

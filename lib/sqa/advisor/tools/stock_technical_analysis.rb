@@ -69,12 +69,10 @@ module SQA
           { error: "Indicator computation failed: #{e.message}" }
         end
 
-
         def compute_rsi(closes)
           rsi_val = SQAI.rsi(closes, period: 14).last&.round(2)
           { rsi_14: rsi_val, rsi_signal: rsi_label(rsi_val) }
         end
-
 
         def compute_moving_averages(closes)
           sma_20_val = SQAI.sma(closes, period: 20).last&.round(4)
@@ -97,7 +95,6 @@ module SQA
           }
         end
 
-
         def compute_macd_indicators(closes)
           macd_line, signal_line, histogram = SQAI.macd(closes)
           {
@@ -107,7 +104,6 @@ module SQA
             macd_crossover: macd_crossover_signal(macd_line, signal_line)
           }
         end
-
 
         def compute_bollinger(closes)
           upper_band, middle_band, lower_band = SQAI.bbands(closes, period: 20)
@@ -126,7 +122,6 @@ module SQA
           }
         end
 
-
         def compute_atr_stoch(highs, lows, closes)
           atr_arr = highs.length >= 14 ? SQAI.atr(highs, lows, closes, period: 14) : nil
           stoch_k_arr, stoch_d_arr = SQAI.stoch(highs, lows, closes)
@@ -139,7 +134,6 @@ module SQA
             stoch_signal: stoch_signal(stoch_k, stoch_d)
           }
         end
-
 
         def compute_volume_indicators(closes, volumes)
           obv_arr   = volumes.length.positive? ? SQAI.obv(closes, volumes) : nil
@@ -158,7 +152,6 @@ module SQA
           }
         end
 
-
         def compute_regime(closes)
           trend = SQA::MarketRegime.detect_trend_with_score(closes)
           vol   = SQA::MarketRegime.detect_volatility_with_score(closes)
@@ -175,7 +168,6 @@ module SQA
         rescue StandardError => e
           { error: "Regime detection failed: #{e.message}" }
         end
-
 
         def compute_signals(closes, indicators)
           rsi_trend = case indicators[:rsi_14]
@@ -220,7 +212,6 @@ module SQA
           { error: "Strategy signal computation failed: #{e.message}" }
         end
 
-
         def llm_predict(symbol, indicators, regime, signals)
           prompt = <<~PROMPT
             You are a professional technical analyst. Based on the data below for #{symbol}, provide a short-term (5–10 trading day) prediction.
@@ -257,7 +248,6 @@ module SQA
           { direction: "Neutral", confidence: "Low", reasoning: "Prediction unavailable." }
         end
 
-
         def rsi_label(rsi)
           return "unknown" unless rsi
 
@@ -269,7 +259,6 @@ module SQA
           else "unknown"
           end
         end
-
 
         def macd_crossover_signal(macd_line, signal_line)
           return "insufficient_data" if macd_line.nil? || signal_line.nil? || macd_line.size < 2
@@ -292,7 +281,6 @@ module SQA
           end
         end
 
-
         def bb_position(price, upper, lower)
           return "unknown" unless price && upper && lower
 
@@ -309,7 +297,6 @@ module SQA
           end
         end
 
-
         def stoch_signal(pct_k, pct_d)
           return "unknown" unless pct_k && pct_d
 
@@ -323,7 +310,6 @@ module SQA
             "bearish"
           end
         end
-
 
         def price_change(closes, days)
           return nil if closes.length < days + 1

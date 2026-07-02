@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "httparty"
 require "uri"
 
@@ -53,6 +54,7 @@ module SQA
 
         private
 
+        # rubocop:disable Metrics/AbcSize -- data-extraction method; score reflects field count, not logical complexity (see Rakefile FLOG_EXCEPTIONS)
         def extract_result(query, data)
           result = { query: query }
 
@@ -79,6 +81,7 @@ module SQA
 
           (result.keys - [:query]).empty? ? nil : result
         end
+        # rubocop:enable Metrics/AbcSize
       end
     end
   end
