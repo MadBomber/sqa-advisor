@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv",    "~> 3.0"
   spec.add_dependency "httparty",  "~> 0.22"
   spec.add_dependency "logger"
+  spec.add_dependency "myway_config"  # XDG-aware configuration management (extends anyway_config)
   spec.add_dependency "ostruct"
   spec.add_dependency "readline"
   spec.add_dependency "ruby_llm"
