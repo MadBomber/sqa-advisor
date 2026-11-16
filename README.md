@@ -14,7 +14,7 @@ An AI-powered investment advisor that combines Claude (via [RubyLLM](https://git
 
 ## Requirements
 
-- Ruby >= 3.2
+- Ruby >= 4.0
 - An Anthropic API key (or OpenAI API key)
 - The [sqa](https://github.com/MadBomber/sqa) gem (provides TA-Lib bindings)
 
