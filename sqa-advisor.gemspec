@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
                      "news sentiment, currency conversion, and conversational stock analysis."
   spec.homepage    = "https://github.com/MadBomber/sqa-advisor"
   spec.license     = "MIT"
-  spec.required_ruby_version = ">= 3.2"
+  spec.required_ruby_version = ">= 4.0"
 
   spec.files         = Dir.glob("{bin,lib,test}/**/*") + %w[.env.example Gemfile sqa-advisor.gemspec]
   spec.executables   = ["sqa-advisor"]
@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv",    "~> 3.0"
   spec.add_dependency "httparty",  "~> 0.22"
   spec.add_dependency "logger"
+  spec.add_dependency "myway_config"  # XDG-aware configuration management (extends anyway_config)
   spec.add_dependency "ostruct"
   spec.add_dependency "readline"
   spec.add_dependency "ruby_llm"
@@ -33,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "flog"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "racc" # flog/flay transitively need this on Ruby 4+
+  spec.add_development_dependency "reek" # code smell gate (rake reek_check)
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "simplecov"

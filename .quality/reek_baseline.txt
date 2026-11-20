@@ -1,0 +1,12 @@
+2	lib/sqa/advisor/tools/calculator.rb
+1	lib/sqa/advisor/tools/cash_flow.rb
+1	lib/sqa/advisor/tools/currency_converter.rb
+5	lib/sqa/advisor/tools/date_tool.rb
+1	lib/sqa/advisor/tools/stock_dividends.rb
+3	lib/sqa/advisor/tools/stock_news_sentiment.rb
+2	lib/sqa/advisor/tools/stock_price.rb
+2	lib/sqa/advisor/tools/stock_recommendations.rb
+7	lib/sqa/advisor/tools/stock_technical_analysis.rb
+2	lib/sqa/advisor/tools/web_search.rb
+1	lib/sqa/advisor/tools/wikipedia.rb
+7	lib/sqa/advisor/tools/yahoo_finance.rb

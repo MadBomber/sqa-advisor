@@ -9,3 +9,6 @@ site/
 /spec/reports/
 /tmp/
 Gemfile.lock
+
+# Local cross-repo dev lockfile (Gemfile.local)
+/Gemfile.local.lock
