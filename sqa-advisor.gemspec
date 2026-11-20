@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
                      "news sentiment, currency conversion, and conversational stock analysis."
   spec.homepage    = "https://github.com/MadBomber/sqa-advisor"
   spec.license     = "MIT"
-  spec.required_ruby_version = ">= 3.2"
+  spec.required_ruby_version = ">= 4.0"
 
   spec.files         = Dir.glob("{bin,lib,test}/**/*") + %w[.env.example Gemfile sqa-advisor.gemspec]
   spec.executables   = ["sqa-advisor"]
